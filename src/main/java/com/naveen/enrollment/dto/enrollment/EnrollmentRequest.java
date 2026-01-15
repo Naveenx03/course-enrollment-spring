@@ -4,10 +4,10 @@ import jakarta.validation.constraints.Min;
 
 public class EnrollmentRequest {
 
-    @Min(1L)
+    @Min(value = 1L, message = "Student Id must be positive")
     private long studentId;
 
-    @Min(1L)
+    @Min(value = 1L, message = "Course Id must be positive")
     private long courseId;
 
     public long getStudentId() {

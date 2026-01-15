@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import com.naveen.enrollment.entity.Course;
 import com.naveen.enrollment.entity.Enrollment;
 import com.naveen.enrollment.entity.Student;
+import com.naveen.enrollment.exception.CourseCapacityFullException;
 import com.naveen.enrollment.exception.CourseNotFoundException;
 import com.naveen.enrollment.exception.DuplicateEnrollmentException;
 import com.naveen.enrollment.exception.StudentNotFoundException;
@@ -31,14 +32,18 @@ public class EnrollStudentIntoCourse {
     @Transactional
     public void enroll(long studentId, long courseId){
         Student student = studentRepo.findById(studentId)
-        .orElseThrow(() -> new StudentNotFoundException("Student not found with ID: "+studentId));
+        .orElseThrow(() -> new StudentNotFoundException(studentId));
         Course course = courseRepo.findByIdForUpdate(courseId)
-        .orElseThrow(() -> new CourseNotFoundException("Course not found with ID: "+courseId));
+        .orElseThrow(() -> new CourseNotFoundException(courseId));
 
         if(enrollmentRepo.existsByStudent_IdAndCourse_Id(studentId, courseId)){
-            throw new DuplicateEnrollmentException("Duplicate enrollment found");
+            throw new DuplicateEnrollmentException();
         }
 
+        long enrollmentCount = enrollmentRepo.countByCourse_Id(courseId);
+        if(enrollmentCount >= course.getCapacity()){
+            throw new CourseCapacityFullException();
+        }
         Enrollment newEnrollment = new Enrollment(student, course);
         enrollmentRepo.save(newEnrollment);
     }
