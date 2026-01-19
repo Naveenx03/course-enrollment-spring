@@ -13,7 +13,7 @@ import jakarta.persistence.LockModeType;
 
 public interface CourseRepository extends JpaRepository<Course, Long>{
 
-    @Lock(LockModeType.OPTIMISTIC)
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT c FROM Course c WHERE c.id = :id")
     Optional<Course> findByIdForUpdate(@Param("id") long id);
 

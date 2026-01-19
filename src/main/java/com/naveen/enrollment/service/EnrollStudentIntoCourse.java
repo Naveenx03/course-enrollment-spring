@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import com.naveen.enrollment.entity.Course;
 import com.naveen.enrollment.entity.Enrollment;
 import com.naveen.enrollment.entity.Student;
-import com.naveen.enrollment.exception.CourseCapacityFullException;
 import com.naveen.enrollment.exception.CourseNotFoundException;
 import com.naveen.enrollment.exception.DuplicateEnrollmentException;
 import com.naveen.enrollment.exception.StudentNotFoundException;
@@ -39,11 +38,7 @@ public class EnrollStudentIntoCourse {
         if(enrollmentRepo.existsByStudent_IdAndCourse_Id(studentId, courseId)){
             throw new DuplicateEnrollmentException();
         }
-
-        long enrollmentCount = enrollmentRepo.countByCourse_Id(courseId);
-        if(enrollmentCount >= course.getCapacity()){
-            throw new CourseCapacityFullException();
-        }
+        course.reserveSeat();
         Enrollment newEnrollment = new Enrollment(student, course);
         enrollmentRepo.save(newEnrollment);
     }

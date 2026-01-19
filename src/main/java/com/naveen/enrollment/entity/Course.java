@@ -3,6 +3,7 @@ package com.naveen.enrollment.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.naveen.enrollment.exception.CourseCapacityFullException;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,7 +12,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Version;
 
 @Entity
 @Table(name="courses")
@@ -30,14 +30,16 @@ public class Course {
     @OneToMany(mappedBy = "course", orphanRemoval = true)
     List<Enrollment> enrollments = new ArrayList<>();
 
-    @Version
-    private long version;
-
     protected Course(){}
 
     public Course(String title, long capacity){
         this.title = title;
         this.capacity = capacity;
+    }
+
+    public void reserveSeat(){
+        if(capacity <= 0) throw new CourseCapacityFullException();
+        capacity--;
     }
 
     public List<Enrollment> getEnrollments() {
