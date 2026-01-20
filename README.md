@@ -51,15 +51,15 @@ https://course-enrollment-spring.onrender.com/
 
 ## 🏗️ Architecture Overview
 
-Browser (HTML + JS)
+Browser (HTML + JS)  
 ↓
-REST Controllers (Spring Boot)
+REST Controllers (Spring Boot)  
 ↓
-Service Layer (Business Logic)
+Service Layer (Business Logic)  
 ↓
-Repository Layer (JPA)
+Repository Layer (JPA)  
 ↓
-Database (H2)
+Database (H2)  
 
 - UI communicates **only via REST APIs**
 - Business rules enforced in service layer
