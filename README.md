@@ -50,7 +50,7 @@ https://course-enrollment-spring.onrender.com/
 ---
 
 ## 🏗️ Architecture Overview
-
+```text
 Browser (HTML + JS)  
 ↓
 REST Controllers (Spring Boot)  
@@ -60,7 +60,7 @@ Service Layer (Business Logic)
 Repository Layer (JPA)  
 ↓
 Database (H2)  
-
+```
 - UI communicates **only via REST APIs**
 - Business rules enforced in service layer
 - Errors mapped to HTTP responses using `@RestControllerAdvice`
